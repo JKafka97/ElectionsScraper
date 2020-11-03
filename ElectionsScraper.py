@@ -5,6 +5,11 @@ from bs4 import BeautifulSoup
 
 
 def main():
+    link = get_link()
+    pass
+
+def get_link():
+    link = input('Insert URL with elections results from your desired district: ')
     pass
 
 
