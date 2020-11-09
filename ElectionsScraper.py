@@ -28,11 +28,16 @@ def get_link():
     return list(zip(locations_numbers, locations_names, locations_links))
 
 
-def write_to_csv(locations_list):
-    filename = input('Specify name of your file (without suffix): ').strip()
+def get_link_data(locations_list):
     link = 'https://www.volby.cz/pls/ps2017nss/' + locations_list[0][2]
     header_soup = get_soup(link)
     header = make_csv_header(header_soup)
+    return header
+
+
+def write_to_csv(locations_list):
+    filename = input('Specify name of your file (without suffix): ').strip()
+    header = get_link_data(locations_list)
     with open('{}.csv'.format(filename), 'w', newline='') as file:
         writer = csv.writer(file)
         writer.writerow(header)
