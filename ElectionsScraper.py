@@ -9,7 +9,7 @@ def main():
     write_to_csv(link)
 
 
-def get_soup(link):  # get BeautifulSoup object
+def get_soup(link):
     try:
         response = requests.get(link)
     except Exception as exc:
@@ -18,7 +18,7 @@ def get_soup(link):  # get BeautifulSoup object
     return BeautifulSoup(response.text, 'html.parser')
 
 
-def get_link():  # get a final list of values
+def get_link():
     input_link = input('Insert URL with elections results from your desired district: ').strip()
     soup = get_soup(input_link)
     locations_numbers = get_locations_numbers(soup)
@@ -65,7 +65,7 @@ def get_td_elements(soup_obj, *args):
     return elements
 
 
-def get_locations_numbers(soup_obj):  # get numbers of locations
+def get_locations_numbers(soup_obj):
     td_elements = get_td_elements(soup_obj, 't1sa1 t1sb1', 't2sa1 t2sb1', 't3sa1 t3sb1')
     td_numbers = []
     for td in td_elements:
@@ -75,12 +75,12 @@ def get_locations_numbers(soup_obj):  # get numbers of locations
     return td_numbers
 
 
-def get_locations_names(soup_obj):  # get names of locations
+def get_locations_names(soup_obj):
     td_elements = get_td_elements(soup_obj, 't1sa1 t1sb2', 't2sa1 t2sb2', 't3sa1 t3sb2')
     return [td.text for td in td_elements]
 
 
-def get_locations_links(soup_obj):  # get link to location
+def get_locations_links(soup_obj):
     td_elements = get_td_elements(soup_obj, 't1sa1 t1sb1', 't2sa1 t2sb1', 't3sa1 t3sb1')
     td_links = []
     for td in td_elements:
@@ -90,12 +90,12 @@ def get_locations_links(soup_obj):  # get link to location
     return td_links
 
 
-def get_parties_names(soup_obj):  # to get names of parties (ODS, ČSSD)
+def get_parties_names(soup_obj):
     elements = get_td_elements(soup_obj, 't1sa1 t1sb2', 't2sa1 t2sb2')
     return [element.text for element in elements if element.text != '-']
 
 
-def make_csv_header(soup_obj):  # make head of tab
+def make_csv_header(soup_obj):
     info = ['code', 'location', 'registered', 'envelopes', 'valid']
     parties_names = get_parties_names(soup_obj)
     return info + parties_names
