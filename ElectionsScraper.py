@@ -3,6 +3,11 @@ import csv
 import requests
 from bs4 import BeautifulSoup
 
+numbers_links_locations = ['t1sa1 t1sb1', 't2sa1 t2sb1', 't3sa1 t3sb1']
+names_locations = ['t1sa1 t1sb2', 't2sa1 t2sb2', 't3sa1 t3sb2']
+parties_names_list = ['t1sa1 t1sb2', 't2sa1 t2sb2']
+parties_votes_list = ['t1sa2 t1sb3', 't2sa2 t2sb3']
+
 
 def main():
     link = get_link()
@@ -71,7 +76,7 @@ def get_td_elements(soup_obj, *args):
 
 
 def get_locations_numbers(soup_obj):
-    td_elements = get_td_elements(soup_obj, 't1sa1 t1sb1', 't2sa1 t2sb1', 't3sa1 t3sb1')
+    td_elements = get_td_elements(soup_obj, *numbers_links_locations)
     td_numbers = []
     for td in td_elements:
         if td.find('a'):
@@ -81,12 +86,12 @@ def get_locations_numbers(soup_obj):
 
 
 def get_locations_names(soup_obj):
-    td_elements = get_td_elements(soup_obj, 't1sa1 t1sb2', 't2sa1 t2sb2', 't3sa1 t3sb2')
+    td_elements = get_td_elements(soup_obj, *names_locations)
     return [td.text for td in td_elements]
 
 
 def get_locations_links(soup_obj):
-    td_elements = get_td_elements(soup_obj, 't1sa1 t1sb1', 't2sa1 t2sb1', 't3sa1 t3sb1')
+    td_elements = get_td_elements(soup_obj, *numbers_links_locations)
     td_links = []
     for td in td_elements:
         if td.find('a'):
@@ -96,7 +101,7 @@ def get_locations_links(soup_obj):
 
 
 def get_parties_names(soup_obj):
-    elements = get_td_elements(soup_obj, 't1sa1 t1sb2', 't2sa1 t2sb2')
+    elements = get_td_elements(soup_obj, *names_locations[:2])
     return [element.text for element in elements if element.text != '-']
 
 
@@ -107,7 +112,7 @@ def make_csv_header(soup_obj):
 
 
 def get_parties_votes(soup_obj):
-    elements = get_td_elements(soup_obj, 't1sa2 t1sb3', 't2sa2 t2sb3')
+    elements = get_td_elements(soup_obj, *parties_votes_list)
     parties_votes = []
     for element in elements:
         if element.text != '-':
