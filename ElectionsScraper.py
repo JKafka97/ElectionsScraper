@@ -21,10 +21,9 @@ def get_soup(link):
 def get_link():
     input_link = input('Insert URL with elections results from your desired district: ').strip()
     soup = get_soup(input_link)
-    td_elements = get_td_elements(soup, 't1sa1 t1sb1', 't2sa1 t2sb1', 't3sa1 t3sb1')
-    locations_numbers = get_locations_numbers(td_elements)
-    locations_names = get_locations_names(td_elements)
-    locations_links = get_locations_links(td_elements)
+    locations_numbers = get_locations_numbers(soup)
+    locations_names = get_locations_names(soup)
+    locations_links = get_locations_links(soup)
     return list(zip(locations_numbers, locations_names, locations_links))
 
 
@@ -71,7 +70,8 @@ def get_td_elements(soup_obj, *args):
     return elements
 
 
-def get_locations_numbers(td_elements):
+def get_locations_numbers(soup_obj):
+    td_elements = get_td_elements(soup_obj, 't1sa1 t1sb1', 't2sa1 t2sb1', 't3sa1 t3sb1')
     td_numbers = []
     for td in td_elements:
         if td.find('a'):
@@ -80,11 +80,13 @@ def get_locations_numbers(td_elements):
     return td_numbers
 
 
-def get_locations_names(td_elements):
+def get_locations_names(soup_obj):
+    td_elements = get_td_elements(soup_obj, 't1sa1 t1sb2', 't2sa1 t2sb2', 't3sa1 t3sb2')
     return [td.text for td in td_elements]
 
 
-def get_locations_links(td_elements):
+def get_locations_links(soup_obj):
+    td_elements = get_td_elements(soup_obj, 't1sa1 t1sb1', 't2sa1 t2sb1', 't3sa1 t3sb1')
     td_links = []
     for td in td_elements:
         if td.find('a'):
